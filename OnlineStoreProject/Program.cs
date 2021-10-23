@@ -1,4 +1,6 @@
 using Infrastructure;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.Azure.Functions.Worker.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,7 @@ namespace OnlineStoreProject
 
         static void Configure(HostBuilderContext Builder, IServiceCollection Services)
         {
-            // DBContext
+            // DB Context
             Services.AddDbContext<OnlineStoreContext>(option =>
             {
                 option.UseCosmos(
@@ -31,6 +33,14 @@ namespace OnlineStoreProject
                     Builder.Configuration["CosmosDb:DatabaseName"]
                 );
             });
+
+            // Repositories
+            Services.AddTransient(typeof(IOnlineStoreReadRepository<>), typeof(OnlineStoreReadRepository<>));
+            Services.AddTransient(typeof(IOnlineStoreWriteRepository<>), typeof(OnlineStoreWriteRepository<>));
+
+            // Services
+            Services.AddScoped<IOrderService, OrderService>();
+            Services.AddScoped<IForumService, ForumService>();
         }
     }
 }
