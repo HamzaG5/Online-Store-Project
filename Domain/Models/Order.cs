@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain
+namespace Domain.Models
 {
     public class Order
     {
@@ -19,6 +19,5 @@ namespace Domain
         public Order()
         {
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Models;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services

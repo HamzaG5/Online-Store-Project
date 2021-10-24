@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Domain.DTO;
+using Domain.Models;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -44,14 +45,23 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<Order> AddOrder(Order order)
+        public async Task<Order> AddOrder(OrderDTO orderDTO)
         {
-            if (order == null)
+            if (orderDTO == null)
             {
                 throw new ArgumentNullException("Order must not be null.");
             }
 
-            order.OrderId = Guid.NewGuid();
+            var order = new Order()
+            {
+                OrderId = Guid.NewGuid(),
+                ProductId = orderDTO.ProductId,
+                OrderDate = DateTime.Now,
+                ShippingDate = orderDTO.ShippingDate,
+                Shipped = false,
+                PartitionKey = orderDTO.ProductId.ToString()
+            };
+
             return await _orderWriteRepository.AddAsync(order);
         }
 
