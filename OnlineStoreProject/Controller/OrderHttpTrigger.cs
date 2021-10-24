@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Domain;
-using Infrastructure.Services;
+using Domain.DTO;
+using Infrastructure.Services.OrderService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -37,12 +37,12 @@ namespace OnlineStoreProject
         {
             // get request data
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var order = JsonConvert.DeserializeObject<Order>(requestBody);
+            var orderDTO = JsonConvert.DeserializeObject<OrderDTO>(requestBody);
 
             // create response
             var response = req.CreateResponse();
 
-            await response.WriteAsJsonAsync(await _orderService.AddOrder(order));
+            await response.WriteAsJsonAsync(await _orderService.AddOrder(orderDTO));
             response.StatusCode = HttpStatusCode.Created;
 
             return response;

@@ -1,6 +1,7 @@
 using Infrastructure;
 using Infrastructure.Repositories;
-using Infrastructure.Services;
+using Infrastructure.Services.ForumService;
+using Infrastructure.Services.OrderService;
 using Microsoft.Azure.Functions.Worker.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

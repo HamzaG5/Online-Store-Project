@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services
+namespace Infrastructure.Services.ForumService
 {
     public interface IForumService
     {
