@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.DTO
 {
-    public class Product
+    public class ProductDTO
     {
-        public Guid ProductId { get; set; }
-
         public string ProductName { get; set; }
 
         public string Description { get; set; }
@@ -16,6 +16,5 @@ namespace Domain.Models
 
         public double Amount { get; set; }
 
-        public string PartitionKey { get; set; }
     }
 }

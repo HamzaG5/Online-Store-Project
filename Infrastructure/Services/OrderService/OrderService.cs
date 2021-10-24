@@ -1,6 +1,7 @@
 ﻿using Domain.DTO;
 using Domain.Models;
 using Infrastructure.Repositories;
+using Infrastructure.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,21 @@ namespace Infrastructure.Services.OrderService
 {
     public class OrderService : IOrderService
     {
+        private readonly IProductService _productService;
         private readonly IOnlineStoreReadRepository<Order> _orderReadRepository;
         private readonly IOnlineStoreWriteRepository<Order> _orderWriteRepository;
 
         public OrderService(IOnlineStoreReadRepository<Order> orderReadRepository, 
-            IOnlineStoreWriteRepository<Order> orderWriteRepository)
+            IOnlineStoreWriteRepository<Order> orderWriteRepository, IProductService productService)
         {
             _orderReadRepository = orderReadRepository;
             _orderWriteRepository = orderWriteRepository;
+            _productService = productService;
         }
 
         public async Task<List<Order>> GetAllOrdersAsync()
         {
-            var donations = await _orderReadRepository.GetAll().ToListAsync() ?? throw new Exception("Error retrieving orders.");
+            var donations = await _orderReadRepository.GetAll().ToListAsync();
             return donations;
         }
 
@@ -52,12 +55,14 @@ namespace Infrastructure.Services.OrderService
                 throw new ArgumentNullException("Order must not be null.");
             }
 
-            var order = new Order()
+            await _productService.GetProductByIdAsync(orderDTO.ProductId.ToString());
+
+            Order order = new Order() 
             {
                 OrderId = Guid.NewGuid(),
                 ProductId = orderDTO.ProductId,
                 OrderDate = DateTime.Now,
-                ShippingDate = orderDTO.ShippingDate,
+                ShippingDate = orderDTO.ShippingDate != default(DateTime) ? orderDTO.ShippingDate : throw new InvalidOperationException($"Invalid {nameof(orderDTO.ShippingDate)} provided."),
                 Shipped = false,
                 PartitionKey = orderDTO.ProductId.ToString()
             };
