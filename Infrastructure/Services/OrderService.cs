@@ -27,6 +27,23 @@ namespace Infrastructure.Services
             return donations;
         }
 
+        public async Task<Order> GetOrderByIdAsync(string orderId)
+        {
+            try
+            {
+                Guid resultId = !string.IsNullOrWhiteSpace(orderId) ? Guid.Parse(orderId) : throw new ArgumentNullException("No Order ID was provided.");
+
+                var order = await _orderReadRepository.GetAll().FirstOrDefaultAsync(o => o.OrderId == resultId) ?? 
+                    throw new InvalidOperationException($"Order does not exist. Incorrect Order ID: {orderId} provided.");
+
+                return order;
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Invalid format of Order ID: {orderId} provided.");
+            }
+        }
+
         public async Task<Order> AddOrder(Order order)
         {
             if (order == null)
@@ -36,6 +53,20 @@ namespace Infrastructure.Services
 
             order.OrderId = Guid.NewGuid();
             return await _orderWriteRepository.AddAsync(order);
+        }
+
+        public async Task<Order> ShipOrder(string orderId)
+        {
+            if (string.IsNullOrWhiteSpace(orderId))
+            {
+                throw new NullReferenceException($"{nameof(orderId)} must be provided.");
+            }
+
+            Order order = await GetOrderByIdAsync(orderId);
+            order.Shipped = true;
+            order.ShippingDate = DateTime.Now;
+
+            return await _orderWriteRepository.Update(order);
         }
     }
 }

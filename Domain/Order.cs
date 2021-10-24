@@ -12,6 +12,8 @@ namespace Domain
 
         public DateTime ShippingDate { get; set; }
 
+        public bool Shipped { get; set; }
+
         public string PartitionKey { get; set; }
 
         public Order()

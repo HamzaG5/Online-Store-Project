@@ -9,5 +9,7 @@ namespace Infrastructure.Services
         Task<List<Order>> GetAllOrdersAsync();
        
         Task<Order> AddOrder(Order order);
+
+        Task<Order> ShipOrder(string orderId);
     }
 }

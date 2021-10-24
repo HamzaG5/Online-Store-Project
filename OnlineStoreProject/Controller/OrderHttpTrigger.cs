@@ -20,17 +20,13 @@ namespace OnlineStoreProject
             _orderService = orderService;
         }
 
-        [Function("Orders")]
-        public HttpResponseData Orders([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders")] HttpRequestData req,
+        [Function("GetAllOrders")]
+        public async Task<HttpResponseData> GetAllOrdersAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders")] HttpRequestData req,
             FunctionContext executionContext)
         {
-            var logger = executionContext.GetLogger("Function1");
-            logger.LogInformation("C# HTTP trigger function processed a request.");
+            var response = req.CreateResponse();
 
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-            response.WriteString("Welcome to Azure Functions!");
+            await response.WriteAsJsonAsync(await _orderService.GetAllOrdersAsync());
 
             return response;
         }
@@ -48,6 +44,17 @@ namespace OnlineStoreProject
 
             await response.WriteAsJsonAsync(await _orderService.AddOrder(order));
             response.StatusCode = HttpStatusCode.Created;
+
+            return response;
+        }
+
+        [Function("ShipOrder")]
+        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "orders/{orderId}/ship")] HttpRequestData req,
+            FunctionContext executionContext, string orderId)
+        {
+            var response = req.CreateResponse(HttpStatusCode.OK);
+
+            await response.WriteAsJsonAsync(await _orderService.ShipOrder(orderId));
 
             return response;
         }
