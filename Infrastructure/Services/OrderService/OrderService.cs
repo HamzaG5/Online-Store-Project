@@ -54,7 +54,7 @@ namespace Infrastructure.Services.OrderService
         {
             if (orderDTO == null)
             {
-                throw new ArgumentNullException("Order must not be null.");
+                throw new ArgumentNullException("Order must not be null. Missing request body.");
             }
 
             await _userService.GetUserByIdAsync(orderDTO.UserId); // check if user exists

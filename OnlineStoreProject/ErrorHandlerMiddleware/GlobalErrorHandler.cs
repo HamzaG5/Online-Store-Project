@@ -15,6 +15,7 @@ namespace OnlineStoreProject.ErrorHandlerMiddleware
     public class GlobalErrorHandler : IFunctionsWorkerMiddleware
     {
         private ILogger Logger { get; }
+
         public GlobalErrorHandler(ILogger<GlobalErrorHandler> Logger)
         {
             this.Logger = Logger;

@@ -12,7 +12,7 @@ namespace Infrastructure
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<Forum> Forums { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public OnlineStoreContext(DbContextOptions options) : base(options)
         {
@@ -47,9 +47,9 @@ namespace Infrastructure
                 .HasPartitionKey(p => p.PartitionKey);
 
             // Forum
-            ConfigureModel<Forum>(modelBuilder, nameof(Forums));
-            modelBuilder.Entity<Forum>()
-                .HasPartitionKey(f => f.PartitionKey);
+            ConfigureModel<Review>(modelBuilder, "Forum");
+            modelBuilder.Entity<Review>()
+                .HasPartitionKey(r => r.PartitionKey);
         }
     }
 }

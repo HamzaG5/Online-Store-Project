@@ -50,7 +50,7 @@ namespace Infrastructure.Services.UserService
         {
             if (userDTO == null)
             {
-                throw new ArgumentNullException("User must not be null.");
+                throw new ArgumentNullException("User must not be null. Missing request body.");
             }
 
             if (await GetUserByEmailAsync(userDTO.Email) != null)
@@ -61,10 +61,10 @@ namespace Infrastructure.Services.UserService
             User user = new User()
             {
                 UserId = Guid.NewGuid(),
-                FirstName = !string.IsNullOrWhiteSpace(userDTO.FirstName) ? userDTO.FirstName : throw new ArgumentNullException($"No {nameof(userDTO.FirstName)}was provided."),
-                LastName = !string.IsNullOrWhiteSpace(userDTO.LastName) ? userDTO.LastName : throw new ArgumentNullException($"No {nameof(userDTO.LastName)}was provided."),
+                FirstName = !string.IsNullOrWhiteSpace(userDTO.FirstName) ? userDTO.FirstName : throw new ArgumentNullException($"No {nameof(userDTO.FirstName)} was provided."),
+                LastName = !string.IsNullOrWhiteSpace(userDTO.LastName) ? userDTO.LastName : throw new ArgumentNullException($"No {nameof(userDTO.LastName)} was provided."),
                 Email = userDTO.Email,
-                Password = !string.IsNullOrWhiteSpace(userDTO.Password) ? userDTO.Password : throw new ArgumentNullException($"No {nameof(userDTO.Password)}was provided.")
+                Password = !string.IsNullOrWhiteSpace(userDTO.Password) ? userDTO.Password : throw new ArgumentNullException($"No {nameof(userDTO.Password)} was provided.")
             };
             user.PartitionKey = user.UserId.ToString();
 

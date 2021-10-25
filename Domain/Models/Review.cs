@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
-    public class Forum
+    public class Review
     {
-        public Guid ForumId { get; set; }
-
-        public Guid? UserId { get; set; }
+        public Guid ReviewId { get; set; }
 
         public Guid ProductId { get; set; }
 
         public int Rating { get; set; }
 
-        public string Review { get; set; }
+        public string Description { get; set; }
 
         [JsonIgnore]
         public string PartitionKey { get; set; }

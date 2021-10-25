@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Models;
 using Infrastructure.Services.ForumService;
 using Microsoft.Azure.Functions.Worker;
@@ -26,12 +27,12 @@ namespace OnlineStoreProject
         {
             // get request data
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var forumReview = JsonConvert.DeserializeObject<Forum>(requestBody);
+            var reviewDTO = JsonConvert.DeserializeObject<ReviewDTO>(requestBody);
 
             // create response
             var response = req.CreateResponse();
 
-            await response.WriteAsJsonAsync(await _forumService.AddReview(forumReview));
+            await response.WriteAsJsonAsync(await _forumService.AddReview(reviewDTO));
             response.StatusCode = HttpStatusCode.Created;
 
             return response;
