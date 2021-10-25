@@ -22,6 +22,12 @@ namespace Infrastructure.Services.UserService
             _userWriteRepository = userWriteRepository;
         }
 
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            var users = await _userReadRepository.GetAll().ToListAsync();
+            return users;
+        }
+
         public async Task<User> GetUserByIdAsync(string userId)
         {
             Guid resultId;

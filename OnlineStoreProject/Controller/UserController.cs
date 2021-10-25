@@ -22,6 +22,17 @@ namespace OnlineStoreProject.Controller
             _userService = userService;
         }
 
+        [Function("GetAllUsers")]
+        public async Task<HttpResponseData> GetAllUsersAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "users")] HttpRequestData req,
+            FunctionContext executionContext)
+        {
+            var response = req.CreateResponse();
+
+            await response.WriteAsJsonAsync(await _userService.GetAllUsersAsync());
+
+            return response;
+        }
+
         [Function("CreateUser")]
         public async Task<HttpResponseData> CreateUserAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
