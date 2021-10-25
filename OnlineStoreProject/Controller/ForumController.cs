@@ -11,11 +11,11 @@ using Newtonsoft.Json;
 
 namespace OnlineStoreProject
 {
-    public class ForumHttpTrigger
+    public class ForumController
     {
 		private readonly IForumService _forumService;
 
-        public ForumHttpTrigger(IForumService forumService)
+        public ForumController(IForumService forumService)
         {
             _forumService = forumService;
         }

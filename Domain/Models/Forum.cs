@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
@@ -16,6 +17,7 @@ namespace Domain.Models
 
         public string Review { get; set; }
 
+        [JsonIgnore]
         public string PartitionKey { get; set; }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.DTO
 {
-    public class User
+    public class UserDTO
     {
-        public Guid UserId { get; set; }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -16,8 +15,5 @@ namespace Domain.Models
         public string Email { get; set; }
 
         public string Password { get; set; }
-
-        [JsonIgnore] 
-        public string PartitionKey { get; set; }
     }
 }

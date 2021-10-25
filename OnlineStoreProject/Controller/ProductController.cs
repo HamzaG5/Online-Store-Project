@@ -11,11 +11,11 @@ using Newtonsoft.Json;
 
 namespace OnlineStoreProject.Controller
 {
-    public class ProductHttpTrigger
+    public class ProductController
     {
         private readonly IProductService _productService;
 
-        public ProductHttpTrigger(IProductService productService)
+        public ProductController(IProductService productService)
         {
             _productService = productService;
         }

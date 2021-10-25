@@ -30,19 +30,18 @@ namespace Infrastructure.Services.ProductService
 
         public async Task<Product> GetProductByIdAsync(string productId)
         {
-            try
-            {
-                Guid resultId = !string.IsNullOrWhiteSpace(productId) ? Guid.Parse(productId) : throw new ArgumentNullException("No Product ID was provided.");
-
-                var product = await _productReadRepository.GetAll().FirstOrDefaultAsync(p => p.ProductId == resultId) ??
-                    throw new InvalidOperationException($"Poduct does not exist. Incorrect Product ID: {productId} provided.");
-
-                return product;
-            }
-            catch
+            Guid resultId;
+            var isValid = !string.IsNullOrWhiteSpace(productId) ? Guid.TryParse(productId, out resultId) : throw new ArgumentNullException("No Product ID was provided.");
+           
+            if (!isValid)
             {
                 throw new InvalidOperationException($"Invalid format of Product ID: {productId} provided.");
             }
+
+            var product = await _productReadRepository.GetAll().FirstOrDefaultAsync(p => p.ProductId == resultId) ??
+                throw new InvalidOperationException($"Poduct does not exist. Incorrect Product ID: {productId} provided.");
+
+            return product;
         }
 
         private async Task<Product> GetProductByNameAsync(string productName)
@@ -57,11 +56,13 @@ namespace Infrastructure.Services.ProductService
         {
             if (productDTO == null)
             {
-                throw new ArgumentNullException("Forum must not be null.");
+                throw new ArgumentNullException("Product must not be null.");
             }
 
-            var findProduct = await GetProductByNameAsync(productDTO.ProductName) !?? 
+            if (await GetProductByNameAsync(productDTO.ProductName) != null)
+            {
                 throw new ArgumentException($"Product already exists with this name: {productDTO.ProductName}.");
+            }
 
             Product product = new Product()
             {
@@ -69,9 +70,9 @@ namespace Infrastructure.Services.ProductService
                 ProductName = productDTO.ProductName,
                 Description = !string.IsNullOrWhiteSpace(productDTO.Description) ? productDTO.Description : throw new ArgumentNullException($"{nameof(productDTO.Description)} must be provided."),
                 ImageUrl = !string.IsNullOrWhiteSpace(productDTO.ImageUrl) ? productDTO.ImageUrl : throw new ArgumentNullException($"{nameof(productDTO.ImageUrl)} must be provided."),
-                Amount = productDTO.Amount != 0 ? productDTO.Amount : throw new ArgumentException($"{nameof(productDTO.ImageUrl)} must be provided."),
-                PartitionKey = productDTO.Amount.ToString()
+                Amount = productDTO.Amount > 0 ? productDTO.Amount : throw new ArgumentException($"Invalid {nameof(productDTO.Amount)} provided.")
             };
+            product.PartitionKey = product.ProductId.ToString();
 
             return await _productriteRepository.AddAsync(product);
         }

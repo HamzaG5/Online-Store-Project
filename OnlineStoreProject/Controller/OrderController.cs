@@ -11,11 +11,11 @@ using Newtonsoft.Json;
 
 namespace OnlineStoreProject
 {
-    public class OrderHttpTrigger
+    public class OrderController
     {
 		private readonly IOrderService _orderService;
 
-        public OrderHttpTrigger(IOrderService orderService)
+        public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
         }
@@ -49,7 +49,7 @@ namespace OnlineStoreProject
         }
 
         [Function("ShipOrder")]
-        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "orders/{orderId}/ship")] HttpRequestData req,
+        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders/{orderId}/ship")] HttpRequestData req,
             FunctionContext executionContext, string orderId)
         {
             var response = req.CreateResponse(HttpStatusCode.OK);

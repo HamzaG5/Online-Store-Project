@@ -3,6 +3,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Services.ForumService;
 using Infrastructure.Services.OrderService;
 using Infrastructure.Services.ProductService;
+using Infrastructure.Services.UserService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,7 @@ namespace OnlineStoreProject
             Services.AddTransient(typeof(IOnlineStoreWriteRepository<>), typeof(OnlineStoreWriteRepository<>));
 
             // Services
+            Services.AddScoped<IUserService, UserService>();
             Services.AddScoped<IOrderService, OrderService>();
             Services.AddScoped<IForumService, ForumService>();
             Services.AddScoped<IProductService, ProductService>();

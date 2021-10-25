@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    public class OrderDTO
+    public class ForumDTO
     {
         public string UserId { get; set; }
 
         public string ProductId { get; set; }
 
-        public double PurchaseAmount { get; set; }
+        public int Rating { get; set; }
 
-        public DateTime ShippingDate { get; set; }
+        public string Review { get; set; }
     }
 }

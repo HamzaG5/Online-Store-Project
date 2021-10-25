@@ -12,40 +12,44 @@ namespace Infrastructure
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<Forum> Forum { get; set; }
+        public DbSet<Forum> Forums { get; set; }
 
         public OnlineStoreContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
         }
 
+        private void ConfigureModel<TEntity>(ModelBuilder modelBuilder, string containerName) where TEntity : class
+        {
+            modelBuilder.Entity<TEntity>()
+                .ToContainer(containerName)
+                .HasNoDiscriminator()
+                .UseETagConcurrency();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultContainer("OnlineStoreContainer");
 
+            // Order
+            ConfigureModel<Order>(modelBuilder, nameof(Orders));
             modelBuilder.Entity<Order>()
-                .ToContainer(nameof(Orders))
-                .HasNoDiscriminator() 
-                .HasPartitionKey(d => d.PartitionKey)
-                .UseETagConcurrency();
+                .HasPartitionKey(o => o.PartitionKey);
 
+            // User
+            ConfigureModel<User>(modelBuilder, nameof(Users));
             modelBuilder.Entity<User>()
-                .ToContainer(nameof(Users))
-                .HasNoDiscriminator()
-                .HasPartitionKey(u => u.PartitionKey)
-                .UseETagConcurrency();
+                .HasPartitionKey(u => u.PartitionKey);
 
+            // Product
+            ConfigureModel<Product>(modelBuilder, nameof(Products));
             modelBuilder.Entity<Product>()
-                .ToContainer(nameof(Products))
-                .HasNoDiscriminator()
-                .HasPartitionKey(p => p.PartitionKey)
-                .UseETagConcurrency();
+                .HasPartitionKey(p => p.PartitionKey);
 
+            // Forum
+            ConfigureModel<Forum>(modelBuilder, nameof(Forums));
             modelBuilder.Entity<Forum>()
-                .ToContainer(nameof(Forum))
-                .HasNoDiscriminator()
-                .HasPartitionKey(f => f.PartitionKey)
-                .UseETagConcurrency();
+                .HasPartitionKey(f => f.PartitionKey);
         }
     }
 }
