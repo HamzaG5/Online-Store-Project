@@ -49,7 +49,7 @@ namespace OnlineStoreProject
         }
 
         [Function("ShipOrder")]
-        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders/{orderId}/ship")] HttpRequestData req,
+        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders/ship/{orderId}")] HttpRequestData req,
             FunctionContext executionContext, string orderId)
         {
             var response = req.CreateResponse(HttpStatusCode.OK);

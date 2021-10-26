@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             if (entity == null)
             {

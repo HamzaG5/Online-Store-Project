@@ -1,6 +1,8 @@
 ﻿using Domain.DTO;
 using Domain.Models;
+using HttpMultipartParser;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services.ProductService
@@ -12,5 +14,7 @@ namespace Infrastructure.Services.ProductService
         Task<Product> GetProductByIdAsync(string productId);
 
         Task<Product> AddProduct(ProductDTO productDTO);
+
+        Task UploadProductImage(string productId, FilePart imageFile);
     }
 }

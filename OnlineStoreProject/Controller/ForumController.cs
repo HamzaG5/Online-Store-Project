@@ -21,8 +21,19 @@ namespace OnlineStoreProject
             _forumService = forumService;
         }
 
+        [Function("GetAllReviews")]
+        public async Task<HttpResponseData> GetAllReviewsAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "forum/reviews")] HttpRequestData req,
+            FunctionContext executionContext)
+        {
+            var response = req.CreateResponse();
+
+            await response.WriteAsJsonAsync(await _forumService.GetAllReviewsAsync());
+
+            return response;
+        }
+
         [Function("AddReview")]
-        public async Task<HttpResponseData> AddReviewAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "forum/review")] HttpRequestData req,
+        public async Task<HttpResponseData> AddReviewAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "forum/reviews")] HttpRequestData req,
             FunctionContext executionContext)
         {
             // get request data

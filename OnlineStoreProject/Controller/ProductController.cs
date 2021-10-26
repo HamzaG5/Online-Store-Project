@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain.DTO;
+using HttpMultipartParser;
 using Infrastructure.Services.ProductService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -44,6 +46,24 @@ namespace OnlineStoreProject.Controller
 
             await response.WriteAsJsonAsync(await _productService.AddProduct(productDTO));
             response.StatusCode = HttpStatusCode.Created;
+
+            return response;
+        }
+
+        [Function("UploadProductImage")]
+        public async Task<HttpResponseData> UploadProductImageAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "products/image/{productId}")] HttpRequestData req,
+            FunctionContext executionContext, string productId)
+        {
+            // get request data
+            var parsedFormBody = MultipartFormDataParser.ParseAsync(req.Body);
+            var file = parsedFormBody.Result.Files[0];
+           
+            // create response
+            var response = req.CreateResponse(HttpStatusCode.Created);
+
+            await _productService.UploadProductImage(productId, file);
+
+            await response.WriteStringAsync("Image product uploaded.");
 
             return response;
         }

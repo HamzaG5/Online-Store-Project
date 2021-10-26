@@ -2,7 +2,9 @@
 using Domain.Models;
 using Infrastructure.Repositories;
 using Infrastructure.Services.ProductService;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +22,12 @@ namespace Infrastructure.Services.ForumService
             _forumReadRepository = forumReadRepository;
             _forumWriteRepository = forumWriteRepository;
             _productService = productService;
+        }
+
+        public async Task<List<Review>> GetAllReviewsAsync()
+        {
+            var reviews = await _forumReadRepository.GetAll().ToListAsync();
+            return reviews;
         }
 
         public async Task<Review> AddReview(ReviewDTO reviewDTO)

@@ -1,9 +1,13 @@
-﻿using Domain.DTO;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Domain.DTO;
 using Domain.Models;
+using HttpMultipartParser;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,14 +16,20 @@ namespace Infrastructure.Services.ProductService
 {
     public class ProductService : IProductService
     {
+
+        private BlobServiceClient blobServiceClient;
+        private BlobContainerClient containerClient;
         private readonly IOnlineStoreReadRepository<Product> _productReadRepository;
-        private readonly IOnlineStoreWriteRepository<Product> _productriteRepository;
+        private readonly IOnlineStoreWriteRepository<Product> _productWriteRepository;
 
         public ProductService(IOnlineStoreReadRepository<Product> productReadRepository, 
             IOnlineStoreWriteRepository<Product> productWriteRepository)
         {
             _productReadRepository = productReadRepository;
-            _productriteRepository = productWriteRepository;
+            _productWriteRepository = productWriteRepository;
+
+            blobServiceClient = new BlobServiceClient(Environment.GetEnvironmentVariable("BlobCreds:ConnectionString", EnvironmentVariableTarget.Process));
+            containerClient = blobServiceClient.GetBlobContainerClient(Environment.GetEnvironmentVariable("BlobCreds:ContainerName", EnvironmentVariableTarget.Process));
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
@@ -74,7 +84,35 @@ namespace Infrastructure.Services.ProductService
             };
             product.PartitionKey = product.ProductId.ToString();
 
-            return await _productriteRepository.AddAsync(product);
+            return await _productWriteRepository.AddAsync(product);
+        }
+
+        public async Task UploadProductImage(string productId, FilePart imageFile)
+        {
+            // check content type
+            _ = imageFile.ContentType == "image/jpeg" || imageFile.ContentType == "image/png" || imageFile.ContentType == "image/bmp"
+                ? imageFile.ContentType : throw new InvalidOperationException("Invalid image type. Must be of type jpeg, png or bmp.");
+
+            //check file size
+            _ = imageFile.Data.Length > 0 ? imageFile.Data.Length : throw new ArgumentException("Invalid image size.");
+
+            // Get a reference to a blob
+            BlobClient blobClient = containerClient.GetBlobClient(imageFile.Name);
+
+            // Upload the file
+            await blobClient.UploadAsync(imageFile.Data, new BlobHttpHeaders { ContentType = imageFile.ContentType });
+
+            // get the URL of the uploaded image
+            var imageUrl = blobClient.Uri.AbsoluteUri;
+
+            // check if product exists
+            var product = await GetProductByIdAsync(productId);
+
+            // set url for the product
+            product.ImageUrl = imageUrl;
+
+            // update product
+            await _productWriteRepository.UpdateAsync(product);
         }
     }
 }

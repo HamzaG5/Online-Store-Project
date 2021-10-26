@@ -11,6 +11,6 @@ namespace Infrastructure.Repositories
     {
         Task<TEntity> AddAsync(TEntity entity);
 
-        Task<TEntity> Update(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
     }
 }

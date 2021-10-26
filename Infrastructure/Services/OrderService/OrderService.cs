@@ -86,7 +86,7 @@ namespace Infrastructure.Services.OrderService
             order.Shipped = true;
             order.ShippingDate = DateTime.Now;
 
-            return await _orderWriteRepository.Update(order);
+            return await _orderWriteRepository.UpdateAsync(order);
         }
     }
 }
