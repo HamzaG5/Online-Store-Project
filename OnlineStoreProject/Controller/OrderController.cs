@@ -58,5 +58,18 @@ namespace OnlineStoreProject
 
             return response;
         }
+
+        [Function("DeleteOrder")]
+        public async Task<HttpResponseData> DeleteOrderAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "orders/{orderId}")] HttpRequestData req,
+            FunctionContext executionContext, string orderId)
+        {
+            // create response
+            HttpResponseData response = req.CreateResponse(HttpStatusCode.Accepted);
+
+            await _orderService.DeleteOrderAsync(orderId);
+            await response.WriteStringAsync("The order was successfully removed.");
+
+            return response;
+        }
     }
 }

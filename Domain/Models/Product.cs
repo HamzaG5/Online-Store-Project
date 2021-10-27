@@ -13,11 +13,15 @@ namespace Domain.Models
 
         public string Description { get; set; }
 
-        public string ImageUrl { get; set; }
+        public List<Image> Images { get; set; }
 
         public double Amount { get; set; }
 
         [JsonIgnore]
         public string PartitionKey { get; set; }
+
+        public Product()
+        {
+        }
     }
 }

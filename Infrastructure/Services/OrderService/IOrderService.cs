@@ -14,5 +14,8 @@ namespace Infrastructure.Services.OrderService
         Task<Order> AddOrder(OrderDTO order);
 
         Task<Order> ShipOrder(string orderId);
+
+        Task DeleteOrderAsync(string orderId);
+
     }
 }

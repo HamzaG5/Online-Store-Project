@@ -49,5 +49,18 @@ namespace OnlineStoreProject.Controller
 
             return response;
         }
+
+        [Function("DeleteUser")]
+        public async Task<HttpResponseData> DeleteUserAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "users/{userId}")] HttpRequestData req,
+            FunctionContext executionContext, string userId)
+        {
+            // create response
+            HttpResponseData response = req.CreateResponse(HttpStatusCode.Accepted);
+
+            await _userService.DeleteUserAsync(userId);
+            await response.WriteStringAsync("The user was successfully removed.");
+
+            return response;
+        }
     }
 }

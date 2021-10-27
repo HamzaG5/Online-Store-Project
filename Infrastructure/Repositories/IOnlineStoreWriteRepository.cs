@@ -12,5 +12,7 @@ namespace Infrastructure.Repositories
         Task<TEntity> AddAsync(TEntity entity);
 
         Task<TEntity> UpdateAsync(TEntity entity);
+
+        Task DeleteAsync(TEntity entity);
     }
 }

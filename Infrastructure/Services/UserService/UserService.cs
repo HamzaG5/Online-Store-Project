@@ -76,5 +76,11 @@ namespace Infrastructure.Services.UserService
 
             return await _userWriteRepository.AddAsync(user);
         }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            User user = await GetUserByIdAsync(userId);
+            await _userWriteRepository.DeleteAsync(user);
+        }
     }
 }

@@ -44,7 +44,8 @@ namespace Infrastructure
             // Product
             ConfigureModel<Product>(modelBuilder, nameof(Products));
             modelBuilder.Entity<Product>()
-                .HasPartitionKey(p => p.PartitionKey);
+                .HasPartitionKey(p => p.PartitionKey)
+                .OwnsMany(p => p.Images);
 
             // Forum
             ConfigureModel<Review>(modelBuilder, "Forum");

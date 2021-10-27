@@ -15,6 +15,8 @@ namespace Infrastructure.Services.ProductService
 
         Task<Product> AddProduct(ProductDTO productDTO);
 
-        Task UploadProductImage(string productId, FilePart imageFile);
+        Task<Product> UploadProductImage(string productId, FilePart imageFile);
+
+        Task DeleteProductAsync(string productId);
     }
 }

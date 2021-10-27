@@ -79,7 +79,6 @@ namespace Infrastructure.Services.ProductService
                 ProductId = Guid.NewGuid(),
                 ProductName = productDTO.ProductName,
                 Description = !string.IsNullOrWhiteSpace(productDTO.Description) ? productDTO.Description : throw new ArgumentNullException($"{nameof(productDTO.Description)} must be provided."),
-                ImageUrl = !string.IsNullOrWhiteSpace(productDTO.ImageUrl) ? productDTO.ImageUrl : throw new ArgumentNullException($"{nameof(productDTO.ImageUrl)} must be provided."),
                 Amount = productDTO.Amount > 0 ? productDTO.Amount : throw new ArgumentException($"Invalid {nameof(productDTO.Amount)} provided.")
             };
             product.PartitionKey = product.ProductId.ToString();
@@ -87,32 +86,31 @@ namespace Infrastructure.Services.ProductService
             return await _productWriteRepository.AddAsync(product);
         }
 
-        public async Task UploadProductImage(string productId, FilePart imageFile)
+        public async Task<Product> UploadProductImage(string productId, FilePart imageFile)
         {
-            // check content type
+            // check for correct content type
             _ = imageFile.ContentType == "image/jpeg" || imageFile.ContentType == "image/png" || imageFile.ContentType == "image/bmp"
                 ? imageFile.ContentType : throw new InvalidOperationException("Invalid image type. Must be of type jpeg, png or bmp.");
 
             //check file size
             _ = imageFile.Data.Length > 0 ? imageFile.Data.Length : throw new ArgumentException("Invalid image size.");
 
-            // Get a reference to a blob
             BlobClient blobClient = containerClient.GetBlobClient(imageFile.Name);
-
-            // Upload the file
             await blobClient.UploadAsync(imageFile.Data, new BlobHttpHeaders { ContentType = imageFile.ContentType });
+           
+            var imageUrl = blobClient.Uri.AbsoluteUri; // get the URL of the uploaded image
+            var image = new Image(imageFile.Name, imageUrl);
 
-            // get the URL of the uploaded image
-            var imageUrl = blobClient.Uri.AbsoluteUri;
+            var product = await GetProductByIdAsync(productId); // check if product exists
+            product.Images.Add(image);
 
-            // check if product exists
-            var product = await GetProductByIdAsync(productId);
+            return await _productWriteRepository.UpdateAsync(product); // update product
+        }
 
-            // set url for the product
-            product.ImageUrl = imageUrl;
-
-            // update product
-            await _productWriteRepository.UpdateAsync(product);
+        public async Task DeleteProductAsync(string productId)
+        {
+            Product product = await GetProductByIdAsync(productId);
+            await _productWriteRepository.DeleteAsync(product);
         }
     }
 }

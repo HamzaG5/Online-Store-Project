@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Entity must not be null.");
+                throw new ArgumentNullException($"{nameof(entity)} cannot be null.");
             }
 
             await _onlineStoreContext.AddAsync(entity);
@@ -33,13 +33,24 @@ namespace Infrastructure.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Entity must not be null.");
+                throw new ArgumentNullException($"{nameof(entity)} cannot be null.");
             }
 
             _onlineStoreContext.Update(entity);
             await _onlineStoreContext.SaveChangesAsync();
 
             return entity;
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(entity)} cannot be null.");
+            }
+
+            _onlineStoreContext.Remove(entity);
+            await _onlineStoreContext.SaveChangesAsync();
         }
     }
 }

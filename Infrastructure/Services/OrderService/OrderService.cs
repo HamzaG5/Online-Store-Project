@@ -77,16 +77,17 @@ namespace Infrastructure.Services.OrderService
 
         public async Task<Order> ShipOrder(string orderId)
         {
-            if (string.IsNullOrWhiteSpace(orderId))
-            {
-                throw new NullReferenceException($"{nameof(orderId)} must be provided.");
-            }
-
             Order order = await GetOrderByIdAsync(orderId);
             order.Shipped = true;
             order.ShippingDate = DateTime.Now;
 
             return await _orderWriteRepository.UpdateAsync(order);
+        }
+
+        public async Task DeleteOrderAsync(string orderId)
+        {
+            Order order = await GetOrderByIdAsync(orderId);
+            await _orderWriteRepository.DeleteAsync(order);
         }
     }
 }

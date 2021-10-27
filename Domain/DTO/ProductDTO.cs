@@ -12,8 +12,6 @@ namespace Domain.DTO
 
         public string Description { get; set; }
 
-        public string ImageUrl { get; set; }
-
         public double Amount { get; set; }
 
     }

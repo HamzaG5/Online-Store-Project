@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -61,9 +62,22 @@ namespace OnlineStoreProject.Controller
             // create response
             var response = req.CreateResponse(HttpStatusCode.Created);
 
-            await _productService.UploadProductImage(productId, file);
+            var product = await _productService.UploadProductImage(productId, file);
 
-            await response.WriteStringAsync("Image product uploaded.");
+            await response.WriteStringAsync($"Image product uploaded. Image URL: {product.Images.LastOrDefault()}");
+
+            return response;
+        }
+
+        [Function("DeleteProduct")]
+        public async Task<HttpResponseData> DeleteProductAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "products/{productId}")] HttpRequestData req,
+            FunctionContext executionContext, string productId)
+        {
+            // create response
+            HttpResponseData response = req.CreateResponse(HttpStatusCode.Accepted);
+
+            await _productService.DeleteProductAsync(productId);
+            await response.WriteStringAsync("The product was successfully removed.");
 
             return response;
         }

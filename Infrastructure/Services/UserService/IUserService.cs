@@ -12,5 +12,8 @@ namespace Infrastructure.Services.UserService
         Task<User> GetUserByIdAsync(string userId);
 
         Task<User> AddUser(UserDTO userDTO);
+
+        Task DeleteUserAsync(string userId);
+
     }
 }
