@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OnlineStoreProject.ErrorHandlerMiddleware;
+using System;
 using System.Threading.Tasks;
 
 namespace OnlineStoreProject
@@ -35,9 +36,9 @@ namespace OnlineStoreProject
             Services.AddDbContext<OnlineStoreContext>(option =>
             {
                 option.UseCosmos(
-                    Builder.Configuration["CosmosDb:Account"],
-                    Builder.Configuration["CosmosDb:Key"],
-                    Builder.Configuration["CosmosDb:DatabaseName"]
+                    Environment.GetEnvironmentVariable("CosmosDb:Account", EnvironmentVariableTarget.Process), 
+                    Environment.GetEnvironmentVariable("CosmosDb:Key", EnvironmentVariableTarget.Process), 
+                    Environment.GetEnvironmentVariable("CosmosDb:DatabaseName", EnvironmentVariableTarget.Process)
                 );
             });
 

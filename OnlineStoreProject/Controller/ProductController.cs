@@ -64,7 +64,7 @@ namespace OnlineStoreProject.Controller
 
             var product = await _productService.UploadProductImage(productId, file);
 
-            await response.WriteStringAsync($"Image product uploaded. Image URL: {product.Images.LastOrDefault()}");
+            await response.WriteStringAsync($"Image product uploaded. Image URL: {product.Images.LastOrDefault().ImageUrl}");
 
             return response;
         }
