@@ -23,7 +23,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("GetAllUsers")]
-        public async Task<HttpResponseData> GetAllUsersAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "users")] HttpRequestData req,
+        public async Task<HttpResponseData> GetAllUsersAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var response = req.CreateResponse();
@@ -34,7 +34,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("CreateUser")]
-        public async Task<HttpResponseData> CreateUserAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "users")] HttpRequestData req,
+        public async Task<HttpResponseData> CreateUserAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
         {
             // get request data
@@ -51,7 +51,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("DeleteUser")]
-        public async Task<HttpResponseData> DeleteUserAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "users/{userId}")] HttpRequestData req,
+        public async Task<HttpResponseData> DeleteUserAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "users/{userId}")] HttpRequestData req,
             FunctionContext executionContext, string userId)
         {
             // create response

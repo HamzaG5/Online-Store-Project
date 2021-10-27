@@ -24,7 +24,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("GetAllProducts")]
-        public async Task<HttpResponseData> GetAllProductsAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "products")] HttpRequestData req,
+        public async Task<HttpResponseData> GetAllProductsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var response = req.CreateResponse();
@@ -35,7 +35,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("CreateProduct")]
-        public async Task<HttpResponseData> CreateProductAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "products")] HttpRequestData req,
+        public async Task<HttpResponseData> CreateProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products")] HttpRequestData req,
             FunctionContext executionContext)
         {
             // get request data
@@ -52,7 +52,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("UploadProductImage")]
-        public async Task<HttpResponseData> UploadProductImageAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "products/image/{productId}")] HttpRequestData req,
+        public async Task<HttpResponseData> UploadProductImageAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products/image/{productId}")] HttpRequestData req,
             FunctionContext executionContext, string productId)
         {
             // get request data
@@ -70,7 +70,7 @@ namespace OnlineStoreProject.Controller
         }
 
         [Function("DeleteProduct")]
-        public async Task<HttpResponseData> DeleteProductAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "products/{productId}")] HttpRequestData req,
+        public async Task<HttpResponseData> DeleteProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "products/{productId}")] HttpRequestData req,
             FunctionContext executionContext, string productId)
         {
             // create response

@@ -21,7 +21,7 @@ namespace OnlineStoreProject
         }
 
         [Function("GetAllOrders")]
-        public async Task<HttpResponseData> GetAllOrdersAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders")] HttpRequestData req,
+        public async Task<HttpResponseData> GetAllOrdersAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "orders")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var response = req.CreateResponse();
@@ -32,7 +32,7 @@ namespace OnlineStoreProject
         }
 
         [Function("CreateOrder")]
-        public async Task<HttpResponseData> CreateOrderAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "orders")] HttpRequestData req,
+        public async Task<HttpResponseData> CreateOrderAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")] HttpRequestData req,
             FunctionContext executionContext)
         {
             // get request data
@@ -49,7 +49,7 @@ namespace OnlineStoreProject
         }
 
         [Function("ShipOrder")]
-        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orders/ship/{orderId}")] HttpRequestData req,
+        public async Task<HttpResponseData> ShipOrderAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "orders/ship/{orderId}")] HttpRequestData req,
             FunctionContext executionContext, string orderId)
         {
             var response = req.CreateResponse(HttpStatusCode.OK);
@@ -60,7 +60,7 @@ namespace OnlineStoreProject
         }
 
         [Function("DeleteOrder")]
-        public async Task<HttpResponseData> DeleteOrderAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "orders/{orderId}")] HttpRequestData req,
+        public async Task<HttpResponseData> DeleteOrderAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "orders/{orderId}")] HttpRequestData req,
             FunctionContext executionContext, string orderId)
         {
             // create response

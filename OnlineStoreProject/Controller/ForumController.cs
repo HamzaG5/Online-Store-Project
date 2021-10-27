@@ -22,7 +22,7 @@ namespace OnlineStoreProject
         }
 
         [Function("GetAllReviews")]
-        public async Task<HttpResponseData> GetAllReviewsAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "forum/reviews")] HttpRequestData req,
+        public async Task<HttpResponseData> GetAllReviewsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "forum/reviews")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var response = req.CreateResponse();
@@ -33,7 +33,7 @@ namespace OnlineStoreProject
         }
 
         [Function("AddReview")]
-        public async Task<HttpResponseData> AddReviewAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "forum/reviews")] HttpRequestData req,
+        public async Task<HttpResponseData> AddReviewAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "forum/reviews")] HttpRequestData req,
             FunctionContext executionContext)
         {
             // get request data
