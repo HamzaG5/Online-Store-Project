@@ -1,15 +1,12 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoMapper;
 using Domain.DTO;
 using HttpMultipartParser;
 using Infrastructure.Services.ProductService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace OnlineStoreProject.Controller

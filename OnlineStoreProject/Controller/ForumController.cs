@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Domain.DTO;
-using Domain.Models;
 using Infrastructure.Services.ForumService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace OnlineStoreProject
